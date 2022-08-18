@@ -70,5 +70,10 @@ namespace FileManager
 
             return value;
         }
+
+        public void ShowTextInfo(string str)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -38,6 +38,9 @@ namespace WpfApp1
             MainWin.Title = "Файловый менеджер v2.0";
             _UserInterface = new WPFUserInterface(this);
             _Logic = new FileManagerLogic(_UserInterface);
+            UpperTb.Text = _Logic.CurrentDirectory.ToString();
+            LeftTb.Text = "Введите команду";
+
             //manager.Start(); 
 
             //o1 = new Class1();

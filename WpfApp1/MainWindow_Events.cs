@@ -19,19 +19,61 @@ namespace WpfApp1;
 
 public partial class MainWindow 
 {
-    private void btn1_Click(object sender, RoutedEventArgs e)
-    {
-        //var sometxt = o1.v1;
-        MessageBox.Show("click", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+    //private void btn1_Click(object sender, RoutedEventArgs e)
+    //{
+    //    //var sometxt = o1.v1;
+    //    MessageBox.Show("click", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
 
-        Tbox1.Clear();
-    }
+    //    Tbox1.Clear();
+    //}
 
     private void btnEnter_Click(object sender, RoutedEventArgs e)
     {
-        Tbox1.Text="clicked";
+        EnterPressed();
     }
 
+    private void EnterPressed()
+    {
+        var input = _UserInterface.ReadLine("> ", false);
+
+        var args = input.Split(' ');
+        var command_name = args[0];
+
+        _UserInterface.ClearLeftTb();
+
+        if (!_Logic.Commands.TryGetValue(command_name, out var command))
+        {
+            _UserInterface.WriteLine($"Неизвестная команда {command_name}.");
+            _UserInterface.WriteLine("Для справки введите help, для выхода quit");
+            //continue;
+        }
+        else
+            try
+            {
+                command.Execute(args/*[1..]*/);
+            }
+            catch (Exception error)
+            {
+                _UserInterface.WriteLine($"При выполнении команды {command_name} произошла ошибка:");
+                _UserInterface.WriteLine(error.Message);
+            }
+        _UserInterface.ClearCommandPrompt();
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Button_Click_1(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Button_Click_2(object sender, RoutedEventArgs e)
+    {
+
+    }
 
 
     //private void tbox1_TextInput(object sender, TextCompositionEventArgs e)
@@ -48,37 +90,19 @@ public partial class MainWindow
 
     private void OnKeyDownHandler(object sender, KeyEventArgs e)
     {
-        if (e.Key == Key.Return)
+        var sndr = (TextBox)sender;
+        if (e.Key == Key.Return  && sndr.Name == "Tbox1" )
         {
-            var input = _UserInterface.ReadLine("> ", false);
-
-            var args = input.Split(' ');
-            var command_name = args[0];
-
-            if (!_Logic.Commands.TryGetValue(command_name, out var command))
-            {
-                _UserInterface.WriteLine($"Неизвестная команда {command_name}.");
-                _UserInterface.WriteLine("Для справки введите help, для выхода quit");
-                //continue;
-            }
-
-            try
-            {
-                command.Execute(args/*[1..]*/);
-            }
-            catch (Exception error)
-            {
-                _UserInterface.WriteLine($"При выполнении команды {command_name} произошла ошибка:");
-                _UserInterface.WriteLine(error.Message);
-            }
+            EnterPressed();            
         }
     }
 
-    private void tbox1_TouchDown(object sender, TouchEventArgs e)
-    {
-        var tb = (TextBox)sender;
-        MessageBox.Show("t dwn", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-    }
+    //private void tbox1_TouchDown(object sender, TouchEventArgs e)
+    //{
+    //    var tb = (TextBox)sender;
+    //    MessageBox.Show("t dwn", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
+    //}
+
     //private void tbox1_OnKeyDownHandler(object sender, KeyEventArgs e)
     //{
     //    if (e.Key == Key.Return)

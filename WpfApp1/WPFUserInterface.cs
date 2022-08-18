@@ -17,15 +17,15 @@ namespace WpfApp1
 
         public void Write(string str)
         {
-            _mw.LeftTb.Text = str;
+            _mw.LeftTb.Text = _mw.LeftTb.Text + "  " + str;
         }
 
         public void WriteLine(string str)
         {
-            _mw.LeftTb.Text = str;
+            _mw.LeftTb.Text = _mw.LeftTb.Text + str + "\n";
         }
 
-        private void WritePrompt(string? Prompt, bool PromptNewLine)
+        public void WritePrompt(string? Prompt, bool PromptNewLine)
         {
             //if(Prompt != null && Prompt.Length > 0)
             if (Prompt is { Length: > 0 })
@@ -33,6 +33,15 @@ namespace WpfApp1
                     WriteLine(Prompt);
                 else
                     Write(Prompt);
+        }
+
+        public void ClearLeftTb()
+        {
+            _mw.LeftTb.Text = "";
+        }
+        public void ClearCommandPrompt()
+        {
+            _mw.Tbox1.Text = "";
         }
 
         public string ReadLine(string? Prompt, bool PromptNewLine = true)
@@ -78,6 +87,9 @@ namespace WpfApp1
             return value;
         }
 
-
+        public void ShowTextInfo(string str)
+        {
+            _mw.UpperTb.Text = str;
+        }
     }
 }

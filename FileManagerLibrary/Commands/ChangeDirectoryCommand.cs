@@ -59,6 +59,7 @@ public class ChangeDirectoryCommand : FileManagerCommand
         _FileManager.CurrentDirectory = directory;
 
         _UserInterface.WriteLine($"Текущая директория изменена на {directory.FullName}");
+        _UserInterface.ShowTextInfo($"Текущая директория {directory.FullName}");
 
         Directory.SetCurrentDirectory(directory.FullName);
     }

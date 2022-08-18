@@ -34,6 +34,13 @@ namespace FileManager
             { "quit", quit_command },
             { "exit", quit_command },
             { "cd", new ChangeDirectoryCommand(UserInterface, this) },
+
+            { "mkdir", new CreateDirectoryCommand(UserInterface, this) },
+            { "text_stat", new TextFileStatistics(UserInterface, this) },
+            { "delete", new DeleteCommand(UserInterface, this) },
+            { "copy", new CopyCommand(UserInterface, this) },
+            { "attr", new FileAttributesCommand(UserInterface, this) },
+
         };
 
             // рефлексия - для автоматизации добавления команд в словарь
