@@ -31,7 +31,7 @@ internal class TextFileStatistics : FileManagerCommand
 
         var file_path = Path.Combine(directory.FullName, args[1]);
 
-        if (!File.Exists(file_path))
+        if (File.Exists(file_path))
         {
             string[] readText = File.ReadAllLines(file_path);
             int lines_number=0;
@@ -39,7 +39,7 @@ internal class TextFileStatistics : FileManagerCommand
             foreach (string s in readText)
             {
                 lines_number++;
-                string[] words = s.Split(' ', ',','.');
+                string[] words = s.Split(' ', ',', '.', ';') ;
                 words_number = words.Length + words_number;
             }
             _UserInterface.WriteLine($"файл {file_path} строк:{lines_number}  слов:{words_number}");

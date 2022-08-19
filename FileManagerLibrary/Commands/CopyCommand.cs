@@ -11,7 +11,7 @@ internal class CopyCommand : FileManagerCommand
 {
     private readonly IUserInterface _UserInterface;
     private readonly FileManagerLogic _FileManager;
-    public override string Description => "Копирование файла: copy [from_file] [to_file]";
+    public override string Description => "Копирование файла: copy/cp [from_file] [to_file]";
 
     public CopyCommand(IUserInterface UserInterface, FileManagerLogic FileManager)
     {
@@ -23,7 +23,7 @@ internal class CopyCommand : FileManagerCommand
     {
         if (args.Length != 3 || string.IsNullOrWhiteSpace(args[1]))
         {
-            _UserInterface.WriteLine("Команда копирование файла: copy [from_file] [to_file]");
+            _UserInterface.WriteLine("Команда копирование файла: copy/cp [from_file] [to_file]");
             return;
         }
 
@@ -32,7 +32,7 @@ internal class CopyCommand : FileManagerCommand
         var from_path = Path.Combine(directory.FullName, args[1]);
         var to_path = Path.Combine(directory.FullName, args[2]);
 
-        if (!File.Exists(from_path))
+        if (File.Exists(from_path))
         {
             var from_f = new FileInfo(from_path);
             from_f.CopyTo(to_path);

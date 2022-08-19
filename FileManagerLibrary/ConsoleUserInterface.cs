@@ -75,5 +75,10 @@ namespace FileManager
         {
             throw new NotImplementedException();
         }
+
+        public void Stop()
+        {
+            WriteLine("via command exit");
+        }
     }
 }

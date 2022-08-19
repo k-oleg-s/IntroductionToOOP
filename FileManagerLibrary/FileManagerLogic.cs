@@ -23,7 +23,7 @@ namespace FileManager
 
             var list_dir_command = new PrintDirectoryFilesCommand(UserInterface, this);
             var help_command = new HelpCommand(UserInterface, this);
-            var quit_command = new QuitCommand(this);
+            var quit_command = new QuitCommand(UserInterface, this);
             Commands = new Dictionary<string, FileManagerCommand>
         {
             { "drives", new ListDrivesCommand(UserInterface) },
@@ -38,7 +38,10 @@ namespace FileManager
             { "mkdir", new CreateDirectoryCommand(UserInterface, this) },
             { "text_stat", new TextFileStatistics(UserInterface, this) },
             { "delete", new DeleteCommand(UserInterface, this) },
+            { "remove", new DeleteCommand(UserInterface, this) },
+            { "rm", new DeleteCommand(UserInterface, this) },
             { "copy", new CopyCommand(UserInterface, this) },
+            { "cp", new CopyCommand(UserInterface, this) },
             { "attr", new FileAttributesCommand(UserInterface, this) },
 
         };
@@ -86,6 +89,7 @@ namespace FileManager
         public void Stop()
         {
             _CanWork = false;
+            _UserInterface.Stop();
         }
     }
 }

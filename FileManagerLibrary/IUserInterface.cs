@@ -9,5 +9,7 @@ namespace FileManager
         int ReadInt(string? Prompt, bool PromptNewLine = true);
         double ReadDouble(string? Prompt, bool PromptNewLine = true);
         void ShowTextInfo(string str);
+
+        void Stop();
     }
 }

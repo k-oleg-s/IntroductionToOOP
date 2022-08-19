@@ -23,21 +23,21 @@ class DeleteCommand : FileManagerCommand
     {
         if (args.Length != 2 || string.IsNullOrWhiteSpace(args[1]))
         {
-            _UserInterface.WriteLine("Команда удаления файла: delete [file_name] ");
+            _UserInterface.WriteLine("Команда удаления файла: delete/remove/rm [file_name] ");
             return;
         }
 
         var directory = _FileManager.CurrentDirectory;
         var new_path = Path.Combine(directory.FullName, args[1]);
 
-        if (!Directory.Exists(new_path))
+        if (Directory.Exists(new_path))
         {
             var d = new DirectoryInfo(new_path);
             d.Delete(true);
             _UserInterface.WriteLine($"директория {new_path} удалена");
         }
         else
-        if (!File.Exists(new_path))
+        if (File.Exists(new_path))
         {
             var f = new FileInfo(new_path);
             f.Delete();

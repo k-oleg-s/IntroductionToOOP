@@ -19,14 +19,6 @@ namespace WpfApp1;
 
 public partial class MainWindow 
 {
-    //private void btn1_Click(object sender, RoutedEventArgs e)
-    //{
-    //    //var sometxt = o1.v1;
-    //    MessageBox.Show("click", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-
-    //    Tbox1.Clear();
-    //}
-
     private void btnEnter_Click(object sender, RoutedEventArgs e)
     {
         EnterPressed();
@@ -60,26 +52,45 @@ public partial class MainWindow
         _UserInterface.ClearCommandPrompt();
     }
 
-    private void Button_Click(object sender, RoutedEventArgs e)
+    private void Help_Click(object sender, RoutedEventArgs e)
     {
+        var input = "help";
 
+        var args = input.Split(' ');
+        var command_name = args[0];
+
+        _UserInterface.ClearLeftTb();
+
+        if (!_Logic.Commands.TryGetValue(command_name, out var command))
+        {
+            _UserInterface.WriteLine($"Неизвестная команда {command_name}.");
+            _UserInterface.WriteLine("Для справки введите help, для выхода quit");
+            //continue;
+        }
+        else
+            try
+            {
+                command.Execute(args/*[1..]*/);
+            }
+            catch (Exception error)
+            {
+                _UserInterface.WriteLine($"При выполнении команды {command_name} произошла ошибка:");
+                _UserInterface.WriteLine(error.Message);
+            }
     }
 
-    private void Button_Click_1(object sender, RoutedEventArgs e)
+    private void Attr_Click(object sender, RoutedEventArgs e)
     {
-
+        _UserInterface.ClearLeftTb();
+        _UserInterface.WriteLine("Для просмотра атрибутов команда: attr show [file_name] ");
+        _UserInterface.WriteLine("Для установки атрибута команда: attr set [attr_name] [value] file [file_name] ");
     }
 
-    private void Button_Click_2(object sender, RoutedEventArgs e)
+    private void Statistics_Click(object sender, RoutedEventArgs e)
     {
-
+        _UserInterface.ClearLeftTb();
+        _UserInterface.WriteLine("Статистика по текстовому файлу: text_stat [file_name] ");
     }
-
-
-    //private void tbox1_TextInput(object sender, TextCompositionEventArgs e)
-    //{
-    //    MessageBox.Show("txt input", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-    //}
 
     //private void tbox1_TextChanged(object sender, TextChangedEventArgs e)
     //{
@@ -97,17 +108,8 @@ public partial class MainWindow
         }
     }
 
-    //private void tbox1_TouchDown(object sender, TouchEventArgs e)
-    //{
-    //    var tb = (TextBox)sender;
-    //    MessageBox.Show("t dwn", "Сообщение", MessageBoxButton.OK, MessageBoxImage.Information);
-    //}
-
-    //private void tbox1_OnKeyDownHandler(object sender, KeyEventArgs e)
-    //{
-    //    if (e.Key == Key.Return)
-    //    {
-    //        tbox1.Text = "You Entered: " + tbox1.Text;
-    //    }
-    //}
+    private void Exit_Click(object sender, RoutedEventArgs e)
+    {
+        Application.Current.Shutdown();
+    }
 }

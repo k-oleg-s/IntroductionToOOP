@@ -23,10 +23,12 @@
 
 
         <TextBlock Name="UpperTb" HorizontalAlignment="Left" Margin="27,18,0,0" TextWrapping="Wrap" Text="Current directory unknown" VerticalAlignment="Top" Width="753" Height="22" Grid.ColumnSpan="3" Background="{DynamicResource {x:Static SystemColors.ActiveBorderBrushKey}}"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="290" Margin="0,45,0,0" VerticalAlignment="Top" Width="164" Grid.Column="2"/>
-        <Button Grid.Column="2" Content="Help" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="142" Click="Button_Click"/>
-        <Button Grid.Column="2" Content="Create f/d" HorizontalAlignment="Left" Margin="10,114,0,0" VerticalAlignment="Top" Width="142" Click="Button_Click_1"/>
-        <Button Grid.Column="2" HorizontalAlignment="Left" Margin="10,156,0,0" VerticalAlignment="Top" Width="142" Content="Delete f/d" Click="Button_Click_2"/>
+        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="290" Margin="0,45,0,0" VerticalAlignment="Top" Width="164" Grid.Column="2">
+            <Button Content="Exit" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,244,0,0" Width="144" Click="Exit_Click"/>
+        </Border>
+        <Button Grid.Column="2" Content="Help" HorizontalAlignment="Left" Margin="10,71,0,0" VerticalAlignment="Top" Width="142" Click="Help_Click"/>
+        <Button Grid.Column="2" Content="Attributes" HorizontalAlignment="Left" Margin="10,114,0,0" VerticalAlignment="Top" Width="142" Click="Attr_Click"/>
+        <Button Grid.Column="2" HorizontalAlignment="Left" Margin="10,156,0,0" VerticalAlignment="Top" Width="142" Content="Statistics" Click="Statistics_Click"/>
 
     </Grid>
 </Window>
