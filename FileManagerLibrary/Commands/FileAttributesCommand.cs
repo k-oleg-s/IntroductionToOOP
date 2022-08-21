@@ -11,7 +11,7 @@ internal class FileAttributesCommand : FileManagerCommand
 {
     private readonly IUserInterface _UserInterface;
     private readonly FileManagerLogic _FileManager;
-    public override string Description => "Для просмотра атрибутов команда: attr show [file_name], Для установки атрибута команда: attr set [attr_name] [value] file [file_name]";
+    public override string Description => "Для просмотра атрибутов команда: attr show [file_name], Для установки атрибута команда: attr set [attr_name: Hidden/ReadOnly/System] [value: true/false] file [file_name]";
 
     public FileAttributesCommand(IUserInterface UserInterface, FileManagerLogic FileManager)
     {
@@ -21,6 +21,9 @@ internal class FileAttributesCommand : FileManagerCommand
 
     public override void Execute(string[] args)
     {
+        FileAttributes attributes;
+
+
         //Просмотр аттрибутов
         if (args.Length == 3 || string.IsNullOrWhiteSpace(args[1]))
         {
@@ -35,13 +38,16 @@ internal class FileAttributesCommand : FileManagerCommand
             if (File.Exists(file_path) && to_show == "show")
             {
                 fileInfo = new FileInfo(file_path);
-                //var attributes = File.GetAttributes(file_path);
+                attributes = File.GetAttributes(file_path);
 
-                _UserInterface.WriteLine($" Аттрибут файла Name: {fileInfo.Name}");
-                _UserInterface.WriteLine($" Аттрибут файла Extension: {fileInfo.Extension}");
-                _UserInterface.WriteLine($" Аттрибут файла Attributes: {fileInfo.Attributes.ToString()}");
-                _UserInterface.WriteLine($" Аттрибут файла Length: {fileInfo.Length.ToString()}");
-                _UserInterface.WriteLine($" Аттрибут файла IsReadOnly: {fileInfo.IsReadOnly.ToString()}");
+                string allAttributes="";
+                if ((attributes & FileAttributes.Hidden) == FileAttributes.Hidden) allAttributes = allAttributes + " Hidden";
+                if ((attributes & FileAttributes.Compressed) == FileAttributes.Compressed) allAttributes = allAttributes + " Compressed";
+                if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly) allAttributes = allAttributes + " ReadOnly";
+                if ((attributes & FileAttributes.System) == FileAttributes.System) allAttributes = allAttributes + " System";
+
+                _UserInterface.WriteLine(($"Атрибуты файла {file_path} : {allAttributes}"));
+
             }
             else
             {
@@ -64,28 +70,94 @@ internal class FileAttributesCommand : FileManagerCommand
 
             DirectoryInfo? directory;
             directory = _FileManager.CurrentDirectory;
-            FileInfo fileInfo;
+            //FileInfo fileInfo;
             var file_path = Path.Combine(directory.FullName, file);
+
 
             if (File.Exists(file_path) && to_set == "set" && to_file == "file")
             {
-                fileInfo = new FileInfo(file_path);
-                if (attr_name == "IsReadOnly")
+                //fileInfo = new FileInfo(file_path);
+
+                if (attr_name == "Hidden")
                 {
                     if (Boolean.TryParse(attr_val, out bool result))
                     {
-                        fileInfo.IsReadOnly = result;
+                        attributes = File.GetAttributes(file_path);
+
+                        if (result)
+                        {
+                            File.SetAttributes(file_path, attributes | FileAttributes.Hidden);
+                        }
+                        else
+                        {
+                            attributes = RemoveAttribute(attributes, FileAttributes.Hidden);
+                            File.SetAttributes(file_path, attributes);
+                        };
                     }
-                    else {  _UserInterface.WriteLine($"Указан неверное значение атрибута"); return; }
+                    else { _UserInterface.WriteLine($"Указано неверное значение атрибута, должно быть true или false "); return; }
+
+                    attributes = File.GetAttributes(file_path);
+                    _UserInterface.WriteLine($"Установлен аттрибут {attr_name}: {attr_val}");
                 }
-                _UserInterface.WriteLine($"Установлен аттрибут {attr_name}: {attr_val}");
+                else
+                if (attr_name == "ReadOnly")
+                {
+                    if (Boolean.TryParse(attr_val, out bool result))
+                    {
+                        attributes = File.GetAttributes(file_path);
+
+                        if (result)
+                        {
+                            File.SetAttributes(file_path, attributes | FileAttributes.ReadOnly);
+                        }
+                        else
+                        {
+                            attributes = RemoveAttribute(attributes, FileAttributes.ReadOnly);
+                            File.SetAttributes(file_path, attributes);
+                        };
+                    }
+                    else { _UserInterface.WriteLine($"Указано неверное значение атрибута, должно быть true или false "); return; }
+
+                    attributes = File.GetAttributes(file_path);
+                    _UserInterface.WriteLine($"Установлен аттрибут {attr_name}: {attr_val}");
+                }
+                else
+                if (attr_name == "System")
+                {
+                    if (Boolean.TryParse(attr_val, out bool result))
+                    {
+                        attributes = File.GetAttributes(file_path);
+
+                        if (result)
+                        {
+                            File.SetAttributes(file_path, attributes | FileAttributes.System);
+                        }
+                        else
+                        {
+                            attributes = RemoveAttribute(attributes, FileAttributes.System);
+                            File.SetAttributes(file_path, attributes);
+                        };
+                    }
+                    else { _UserInterface.WriteLine($"Указано неверное значение атрибута, должно быть true или false "); return; }
+
+                    attributes = File.GetAttributes(file_path);
+                    _UserInterface.WriteLine($"Установлен аттрибут {attr_name}: {attr_val}");
+                }
+
+                else _UserInterface.WriteLine($"Аттрибут {attr_name} не обрабатывается");              
+
             }
             else
             {
-                _UserInterface.WriteLine("Для установки атрибута команда: attr set [attr_name] [value] file [file_name]");
+                _UserInterface.WriteLine(Description);
                 return;
             }
 
         }
+    }
+
+    private  FileAttributes RemoveAttribute(FileAttributes attributes, FileAttributes attributesToRemove)
+    {
+        return attributes & ~attributesToRemove;
     }
 }

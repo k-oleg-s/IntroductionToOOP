@@ -77,19 +77,22 @@ public partial class MainWindow
                 _UserInterface.WriteLine($"При выполнении команды {command_name} произошла ошибка:");
                 _UserInterface.WriteLine(error.Message);
             }
+        Tbox1.Focus();
     }
 
     private void Attr_Click(object sender, RoutedEventArgs e)
     {
         _UserInterface.ClearLeftTb();
         _UserInterface.WriteLine("Для просмотра атрибутов команда: attr show [file_name] ");
-        _UserInterface.WriteLine("Для установки атрибута команда: attr set [attr_name] [value] file [file_name] ");
+        _UserInterface.WriteLine("Для установки атрибута команда: attr set [attr_name: Hidden/Compressed/ReadOnly/System] [value: true/false] file [file_name] ");
+        Tbox1.Focus();
     }
 
     private void Statistics_Click(object sender, RoutedEventArgs e)
     {
         _UserInterface.ClearLeftTb();
         _UserInterface.WriteLine("Статистика по текстовому файлу: text_stat [file_name] ");
+        Tbox1.Focus();
     }
 
     //private void tbox1_TextChanged(object sender, TextChangedEventArgs e)
